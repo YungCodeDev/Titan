@@ -60,14 +60,14 @@ export default function Footer() {
               href="https://instagram.com"
               target="_blank"
             >
-              📸 Instagram
+              Instagram
             </a>
             <a
               className="hover:text-white transition"
               href="https://tiktok.com"
               target="_blank"
             >
-              🎵 TikTok
+              TikTok
             </a>
           </div>
         </div>

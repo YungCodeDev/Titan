@@ -22,8 +22,6 @@ export default function Home() {
   const [passerr1, setPassErr1] = useState("");
   const [first, setFirst] = useState("");
   const [firsterr, setFirstErr] = useState("");
-  const [last, setLast] = useState("");
-  const [lasterr, setLastErr] = useState("");
   const [show, setShow] = useState(false);
   const router = useRouter();
 
@@ -58,15 +56,9 @@ export default function Home() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (first === "") {
-      setFirstErr("Enter Firstname!");
+      setFirstErr("Enter Username!");
     } else {
       setFirstErr("");
-    }
-
-    if (last === "") {
-      setLastErr("Enter Firstname!");
-    } else {
-      setLastErr("");
     }
 
     if (email1 === "") {
@@ -133,14 +125,12 @@ export default function Home() {
         password: password1,
         options: {
           data: {
-            first_name: first,
-            last_name: last,
+            full_name: first,
           },
         },
       });
       setEmail1("");
       setFirst("");
-      setLast("");
       setPassword1("");
       if (error) {
         console.error("Signup failed:", error.message);
@@ -225,7 +215,7 @@ export default function Home() {
                       transition={{ duration: 1, delay: 0.6 }}
                       className="text-xl"
                     >
-                      Firstname
+                      Fullname
                     </motion.div>
                     <div className="flex items-center relative">
                       <motion.div
@@ -278,7 +268,7 @@ export default function Home() {
                       transition={{ duration: 1, delay: 1.2 }}
                       className="text-xl"
                     >
-                      Lastname
+                      Email
                     </motion.div>
                     <div className="flex items-center relative">
                       <motion.div
@@ -287,66 +277,12 @@ export default function Home() {
                         transition={{ duration: 1, delay: 1.4 }}
                         className="absolute left-2 top-6.5"
                       >
-                        <User2 size={20} />
-                      </motion.div>
-                      <motion.input
-                        initial={{ y: -10, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 1, delay: 1.6 }}
-                        className="pl-8 outline-0 border border-neutral-600 w-full h-10 text-sm rounded-lg p-2 mt-4 focus:border-neutral-700 focus:ring-2 focus:ring-neutral-700"
-                        value={last}
-                        onChange={(e) => setLast(e.target.value)}
-                      />
-                      {lasterr && (
-                        <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 1.6 }}
-                          className="absolute left-0 top-15 text-sm text-red-500"
-                        >
-                          {lasterr}
-                        </motion.div>
-                      )}
-                      <AnimatePresence>
-                        {last && (
-                          <>
-                            <motion.div
-                              initial={{ x: 10, opacity: 0 }}
-                              animate={{ x: 0, opacity: 1 }}
-                              exit={{ x: 5, opacity: 0 }}
-                              transition={{ duration: 0.5 }}
-                              className="absolute right-2 top-6.5"
-                            >
-                              <Delete size={20} onClick={() => setLast("")} />
-                            </motion.div>
-                          </>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  </div>
-
-                  <div className="mt-10 m-5">
-                    <motion.div
-                      initial={{ rotate: 10, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      transition={{ duration: 1, delay: 1.8 }}
-                      className="text-xl"
-                    >
-                      Email
-                    </motion.div>
-                    <div className="flex items-center relative">
-                      <motion.div
-                        initial={{ y: -10, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 1, delay: 2 }}
-                        className="absolute left-2 top-6.5"
-                      >
                         <Mail size={20} />
                       </motion.div>
                       <motion.input
                         initial={{ y: -10, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 1, delay: 2.2 }}
+                        transition={{ duration: 1, delay: 1.6 }}
                         className="pl-8 outline-0 border border-neutral-600 w-full h-10 text-sm rounded-lg p-2 mt-4 focus:border-neutral-700 focus:ring-2 focus:ring-neutral-700"
                         value={email1}
                         onChange={(e) => setEmail1(e.target.value)}
@@ -382,7 +318,7 @@ export default function Home() {
                     <motion.div
                       initial={{ rotate: 10, opacity: 0 }}
                       animate={{ rotate: 0, opacity: 1 }}
-                      transition={{ duration: 1, delay: 2.4 }}
+                      transition={{ duration: 1, delay: 1.8 }}
                       className="text-xl"
                     >
                       Password
@@ -391,7 +327,7 @@ export default function Home() {
                       <motion.div
                         initial={{ y: -10, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 1, delay: 2.6 }}
+                        transition={{ duration: 1, delay: 2 }}
                         className="absolute left-2 top-6.5"
                       >
                         {show ? (
@@ -410,7 +346,7 @@ export default function Home() {
                       <motion.input
                         initial={{ y: -10, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 1, delay: 2.8 }}
+                        transition={{ duration: 1, delay: 2.2 }}
                         className="pl-8 outline-0 border border-neutral-600 w-full h-10 text-sm rounded-lg p-2 mt-4 focus:border-neutral-700 focus:ring-2 focus:ring-neutral-700"
                         type={show ? "text" : "password"}
                         value={password1}
@@ -451,7 +387,7 @@ export default function Home() {
                       onClick={Signup}
                       initial={{ y: -10, rotate: 10, opacity: 0 }}
                       animate={{ y: 0, rotate: 0, opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 3 }}
+                      transition={{ duration: 0.5, delay: 2.4 }}
                       className="w-[80%] text-lg h-10 rounded-2xl flex items-center justify-center bg-neutral-600"
                     >
                       <div>Signup</div>
@@ -460,7 +396,7 @@ export default function Home() {
                   <motion.div
                     initial={{ x: -10, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 3.2 }}
+                    transition={{ duration: 0.5, delay: 2.6 }}
                     className="flex items-center w-full gap-5 mt-10 mb-10"
                   >
                     <div className="border-t border-neutral-600 w-full"></div>
@@ -472,7 +408,7 @@ export default function Home() {
                       onClick={GoogleLogin}
                       initial={{ y: -10, rotate: 10, opacity: 0 }}
                       animate={{ y: 0, rotate: 0, opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 3.4 }}
+                      transition={{ duration: 0.5, delay: 2.8 }}
                       className="flex items-center justify-center gap-2 border border-neutral-600 p-2 bg-neutral-600 rounded-lg hover:bg-neutral-700 hover:scale-110"
                     >
                       <Image src={google} alt="" width={20} />
@@ -482,7 +418,7 @@ export default function Home() {
                       onClick={GithubLogin}
                       initial={{ y: -10, rotate: 10, opacity: 0 }}
                       animate={{ y: 0, rotate: 0, opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 3.6 }}
+                      transition={{ duration: 0.5, delay: 3 }}
                       className="flex items-center justify-center gap-2 border border-neutral-600 p-2 bg-neutral-600 rounded-lg hover:bg-neutral-700 hover:scale-110"
                     >
                       <Image src={github} alt="" width={20} />
@@ -738,122 +674,64 @@ export default function Home() {
                   Welcome, What's up!
                 </motion.div>
                 <div>
-                  <div className="flex items-center w-full gap-5">
-                    <div className="mt-10 ml-5">
+                  <div className="mt-10 ml-5">
+                    <motion.div
+                      initial={{ rotate: 10, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      transition={{ duration: 1, delay: 0.6 }}
+                      className="text-xl"
+                    >
+                      Fullname
+                    </motion.div>
+                    <div className="flex items-center relative">
                       <motion.div
-                        initial={{ rotate: 10, opacity: 0 }}
-                        animate={{ rotate: 0, opacity: 1 }}
-                        transition={{ duration: 1, delay: 0.6 }}
-                        className="text-xl"
+                        initial={{ y: -10, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 1, delay: 0.8 }}
+                        className="absolute left-2 top-6.5"
                       >
-                        Firstname
+                        <User2 size={20} />
                       </motion.div>
-                      <div className="flex items-center relative">
+                      <motion.input
+                        initial={{ y: -10, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 1, delay: 1 }}
+                        className="pl-8 outline-0 border border-neutral-600 w-[95%] h-10 text-sm rounded-lg p-2 mt-4 focus:border-neutral-700 focus:ring-2 focus:ring-neutral-700"
+                        value={first}
+                        onChange={(e) => setFirst(e.target.value)}
+                      />
+                      {firsterr && (
                         <motion.div
-                          initial={{ y: -10, opacity: 0 }}
-                          animate={{ y: 0, opacity: 1 }}
-                          transition={{ duration: 1, delay: 0.8 }}
-                          className="absolute left-2 top-6.5"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 1 }}
+                          className="absolute left-0 top-15 text-sm text-red-500"
                         >
-                          <User2 size={20} />
+                          {firsterr}
                         </motion.div>
-                        <motion.input
-                          initial={{ y: -10, opacity: 0 }}
-                          animate={{ y: 0, opacity: 1 }}
-                          transition={{ duration: 1, delay: 1 }}
-                          className="pl-8 outline-0 border border-neutral-600 w-full h-10 text-sm rounded-lg p-2 mt-4 focus:border-neutral-700 focus:ring-2 focus:ring-neutral-700"
-                          value={first}
-                          onChange={(e) => setFirst(e.target.value)}
-                        />
-                        {firsterr && (
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 1 }}
-                            className="absolute left-0 top-15 text-sm text-red-500"
-                          >
-                            {firsterr}
-                          </motion.div>
+                      )}
+                      <AnimatePresence>
+                        {first && (
+                          <>
+                            <motion.div
+                              initial={{ x: 10, opacity: 0 }}
+                              animate={{ x: 0, opacity: 1 }}
+                              exit={{ x: 5, opacity: 0 }}
+                              transition={{ duration: 0.5 }}
+                              className="absolute right-8 top-6.5"
+                            >
+                              <Delete size={20} onClick={() => setFirst("")} />
+                            </motion.div>
+                          </>
                         )}
-                        <AnimatePresence>
-                          {first && (
-                            <>
-                              <motion.div
-                                initial={{ x: 10, opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
-                                exit={{ x: 5, opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                                className="absolute right-2 top-6.5"
-                              >
-                                <Delete
-                                  size={20}
-                                  onClick={() => setFirst("")}
-                                />
-                              </motion.div>
-                            </>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    </div>
-                    <div className="mt-10 mr-5">
-                      <motion.div
-                        initial={{ rotate: 10, opacity: 0 }}
-                        animate={{ rotate: 0, opacity: 1 }}
-                        transition={{ duration: 1, delay: 1.2 }}
-                        className="text-xl"
-                      >
-                        Lastname
-                      </motion.div>
-                      <div className="flex items-center relative">
-                        <motion.div
-                          initial={{ y: -10, opacity: 0 }}
-                          animate={{ y: 0, opacity: 1 }}
-                          transition={{ duration: 1, delay: 1.4 }}
-                          className="absolute left-2 top-6.5"
-                        >
-                          <User2 size={20} />
-                        </motion.div>
-                        <motion.input
-                          initial={{ y: -10, opacity: 0 }}
-                          animate={{ y: 0, opacity: 1 }}
-                          transition={{ duration: 1, delay: 1.6 }}
-                          className="pl-8 outline-0 border border-neutral-600 w-full h-10 text-sm rounded-lg p-2 mt-4 focus:border-neutral-700 focus:ring-2 focus:ring-neutral-700"
-                          value={last}
-                          onChange={(e) => setLast(e.target.value)}
-                        />
-                        {lasterr && (
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 1.6 }}
-                            className="absolute left-0 top-15 text-sm text-red-500"
-                          >
-                            {lasterr}
-                          </motion.div>
-                        )}
-                        <AnimatePresence>
-                          {last && (
-                            <>
-                              <motion.div
-                                initial={{ x: 10, opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
-                                exit={{ x: 5, opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                                className="absolute right-2 top-6.5"
-                              >
-                                <Delete size={20} onClick={() => setLast("")} />
-                              </motion.div>
-                            </>
-                          )}
-                        </AnimatePresence>
-                      </div>
+                      </AnimatePresence>
                     </div>
                   </div>
                   <div className="mt-10 m-5">
                     <motion.div
                       initial={{ rotate: 10, opacity: 0 }}
                       animate={{ rotate: 0, opacity: 1 }}
-                      transition={{ duration: 1, delay: 1.8 }}
+                      transition={{ duration: 1, delay: 1.2 }}
                       className="text-xl"
                     >
                       Email
@@ -862,7 +740,7 @@ export default function Home() {
                       <motion.div
                         initial={{ y: -10, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 1, delay: 2 }}
+                        transition={{ duration: 1, delay: 1.4 }}
                         className="absolute left-2 top-6.5"
                       >
                         <Mail size={20} />
@@ -870,7 +748,7 @@ export default function Home() {
                       <motion.input
                         initial={{ y: -10, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 1, delay: 2.2 }}
+                        transition={{ duration: 1, delay: 1.6 }}
                         className="pl-8 outline-0 border border-neutral-600 w-full h-10 text-sm rounded-lg p-2 mt-4 focus:border-neutral-700 focus:ring-2 focus:ring-neutral-700"
                         value={email1}
                         onChange={(e) => setEmail1(e.target.value)}
@@ -906,7 +784,7 @@ export default function Home() {
                     <motion.div
                       initial={{ rotate: 10, opacity: 0 }}
                       animate={{ rotate: 0, opacity: 1 }}
-                      transition={{ duration: 1, delay: 2.4 }}
+                      transition={{ duration: 1, delay: 1.8 }}
                       className="text-xl"
                     >
                       Password
@@ -915,7 +793,7 @@ export default function Home() {
                       <motion.div
                         initial={{ y: -10, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 1, delay: 2.6 }}
+                        transition={{ duration: 1, delay: 2 }}
                         className="absolute left-2 top-6.5"
                       >
                         {show ? (
@@ -934,7 +812,7 @@ export default function Home() {
                       <motion.input
                         initial={{ y: -10, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 1, delay: 2.8 }}
+                        transition={{ duration: 1, delay: 2.2 }}
                         className="pl-8 outline-0 border border-neutral-600 w-full h-10 text-sm rounded-lg p-2 mt-4 focus:border-neutral-700 focus:ring-2 focus:ring-neutral-700"
                         type={show ? "text" : "password"}
                         value={password1}
@@ -975,7 +853,7 @@ export default function Home() {
                       onClick={Signup}
                       initial={{ y: -10, rotate: 10, opacity: 0 }}
                       animate={{ y: 0, rotate: 0, opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 3 }}
+                      transition={{ duration: 0.5, delay: 2.4 }}
                       className="w-[80%] text-lg h-10 rounded-2xl flex items-center justify-center bg-neutral-600"
                     >
                       <div>Signup</div>
@@ -984,7 +862,7 @@ export default function Home() {
                   <motion.div
                     initial={{ x: -10, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 3.2 }}
+                    transition={{ duration: 0.5, delay: 2.6 }}
                     className="flex items-center w-full gap-5 mt-10 mb-10"
                   >
                     <div className="border-t border-neutral-600 w-full"></div>
@@ -996,7 +874,7 @@ export default function Home() {
                       onClick={GoogleLogin}
                       initial={{ y: -10, rotate: 10, opacity: 0 }}
                       animate={{ y: 0, rotate: 0, opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 3.4 }}
+                      transition={{ duration: 0.5, delay: 2.8 }}
                       className="flex items-center justify-center gap-2 border border-neutral-600 p-2 bg-neutral-600 rounded-lg hover:bg-neutral-700 hover:scale-110"
                     >
                       <Image src={google} alt="" width={20} />
@@ -1006,7 +884,7 @@ export default function Home() {
                       onClick={GithubLogin}
                       initial={{ y: -10, rotate: 10, opacity: 0 }}
                       animate={{ y: 0, rotate: 0, opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 3.6 }}
+                      transition={{ duration: 0.5, delay: 3 }}
                       className="flex items-center justify-center gap-2 border border-neutral-600 p-2 bg-neutral-600 rounded-lg hover:bg-neutral-700 hover:scale-110"
                     >
                       <Image src={github} alt="" width={20} />

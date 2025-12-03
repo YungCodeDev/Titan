@@ -10,10 +10,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Edit, Trash } from "lucide-react";
+import { Delete, Edit, Trash } from "lucide-react";
 
 interface Games {
   id: number;
+  created_at: Date;
   Name: string;
   Price: number;
   Platform: string[];
@@ -409,7 +410,7 @@ export default function Home() {
             </div>
           </div>
           <div>
-            <div>
+            <div className="relative">
               <div>
                 <input
                   className="outline-0 border border-neutral-700 m-8 w-90 h-10 text-sm rounded-lg pl-2"
@@ -417,12 +418,22 @@ export default function Home() {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
+                {search && (
+                  <div className="absolute top-11 right-10">
+                    <Delete size={15} onClick={() => setSearch("")} />
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex flex-col gap-5 m-10">
               {games
                 ?.filter((game) =>
                   game.Name?.toLowerCase()?.includes(search.toLowerCase())
+                )
+                .sort(
+                  (a, b) =>
+                    new Date(b.created_at).getTime() -
+                    new Date(a.created_at).getTime()
                 )
                 ?.map((game) => (
                   <div
@@ -436,7 +447,7 @@ export default function Home() {
                             <Carousel
                               opts={{ align: "center" }}
                               orientation="horizontal"
-                              className="w-full max-w-xs"
+                              className="w-full max-w-xs relative"
                             >
                               <CarouselContent>
                                 {game.Image_Url.map((img, index) => (
@@ -453,8 +464,12 @@ export default function Home() {
                                   </CarouselItem>
                                 ))}
                               </CarouselContent>
-                              <CarouselPrevious />
-                              <CarouselNext />
+                              <div className="absolute left-11 top-23">
+                                <CarouselPrevious className="bg-neutral-950 border border-neutral-950" />
+                              </div>
+                              <div className="absolute right-11 top-23">
+                                <CarouselNext className="bg-neutral-800 border border-neutral-800" />
+                              </div>
                             </Carousel>
                           )}
                       </div>
@@ -468,7 +483,7 @@ export default function Home() {
                                   {game.Price}
                                 </div>
                                 <div>{game.discountedPrice}rsd</div>
-                                <div className="text-xs absolute bottom-5 left-30 border border-purple-400 bg-purple-400 rounded-full w-7 h-7 flex justify-center items-center">
+                                <div className="text-xs absolute bottom-5 right-0 border border-purple-400 bg-purple-400 rounded-full w-7 h-7 flex justify-center items-center">
                                   {game.discount}%
                                 </div>
                               </div>
@@ -867,7 +882,7 @@ export default function Home() {
             </div>
           </div>
           <div>
-            <div>
+            <div className="absolute right-5">
               <div>
                 <input
                   className="outline-0 border border-neutral-700 m-8 w-90 h-10 text-sm rounded-lg pl-2"
@@ -877,10 +892,15 @@ export default function Home() {
                 />
               </div>
             </div>
-            <div className="grid md:grid-cols-2 grid-cols-1 gap-25 m-10 mr-25">
+            <div className="grid md:grid-cols-2 grid-cols-1 gap-25 m-10 mr-25 mt-25">
               {games
                 ?.filter((game) =>
                   game.Name?.toLowerCase()?.includes(search.toLowerCase())
+                )
+                .sort(
+                  (a, b) =>
+                    new Date(b.created_at).getTime() -
+                    new Date(a.created_at).getTime()
                 )
                 ?.map((game) => (
                   <div
@@ -911,8 +931,8 @@ export default function Home() {
                                   </CarouselItem>
                                 ))}
                               </CarouselContent>
-                              <CarouselPrevious />
-                              <CarouselNext />
+                              <CarouselPrevious className="bg-neutral-800 border border-neutral-800 hover:bg-neutral-800 hover:text-white" />
+                              <CarouselNext className="bg-neutral-800 border border-neutral-800 hover:bg-neutral-800 hover:text-white" />
                             </Carousel>
                           )}
                       </div>
@@ -926,7 +946,7 @@ export default function Home() {
                                   {game.Price}
                                 </div>
                                 <div>{game.discountedPrice}rsd</div>
-                                <div className="text-xs absolute bottom-5 left-30 border border-purple-400 bg-purple-400 rounded-full w-7 h-7 flex justify-center items-center">
+                                <div className="text-xs absolute bottom-5 right-0 border border-purple-400 bg-purple-400 rounded-full w-7 h-7 flex justify-center items-center">
                                   {game.discount}%
                                 </div>
                               </div>
