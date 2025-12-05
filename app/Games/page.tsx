@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
@@ -15,7 +16,6 @@ import { SiEpicgames, SiOnstar, SiSteam, SiEa } from "react-icons/si";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 
 interface Games {
   id: number;
