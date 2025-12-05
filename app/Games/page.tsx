@@ -31,6 +31,7 @@ interface Games {
 }
 
 export default function Home() {
+  const searchParams = useSearchParams();
   const [games, setGames] = useState<Games[] | null>(null);
   const [minprice, setMinPrice] = useState("");
   const [maxprice, setMaxPrice] = useState("");
@@ -42,7 +43,6 @@ export default function Home() {
   const [yes, setYes] = useState(false);
   const [no, setNo] = useState(false);
   const [genres, setGenres] = useState("");
-  const searchParams = useSearchParams();
   const discount = searchParams.get("discount") === "true";
   const genresParam = searchParams.get("Genres");
   const genresArray = genresParam ? genresParam.split(",") : [];
