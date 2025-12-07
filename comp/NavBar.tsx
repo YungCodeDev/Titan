@@ -8,6 +8,7 @@ import {
   Delete,
   Search,
   ShoppingBag,
+  Trash,
   User2,
   X,
 } from "lucide-react";
@@ -16,12 +17,24 @@ import { User } from "@supabase/supabase-js";
 import { supabase } from "@/app/supabaseClient";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+
+interface Cart {
+  id: number;
+  created_at: Date;
+  Image_Url: string;
+  Name: string;
+  Price: number;
+  quantity: number;
+  discountedPrice: number;
+}
 
 export default function NavBar() {
-  const [show, setShow] = useState(false);
   const [search, setSearch] = useState("");
   const [showI, setShowI] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [carts, setCarts] = useState<Cart[] | null>(null);
+  const router = useRouter();
   const path = usePathname();
 
   useEffect(() => {
@@ -34,6 +47,15 @@ export default function NavBar() {
     };
 
     Getuser();
+  });
+  useEffect(() => {
+    const getGames = async () => {
+      const { data } = await supabase.from("Cart").select("*");
+
+      setCarts(data);
+    };
+
+    getGames();
   });
 
   if (path === "/Account") return <></>;
@@ -71,6 +93,11 @@ export default function NavBar() {
                 placeholder="Search Any..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    router.push(`/Games?Search=${search}`);
+                  }
+                }}
               />
               {search && (
                 <>
@@ -161,47 +188,15 @@ export default function NavBar() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1.5, delay: 0.7 }}
-                    onClick={() => setShow(!show)}
-                    className={`cursor-pointer border border-neutral-600 ${
-                      show
-                        ? "bg-neutral-600 shadow-md shadow-neutral-600"
-                        : " bg-transparent"
-                    }  transition-all w-10 h-10 rounded-xl flex items-center justify-center`}
+                    className="cursor-pointer border border-neutral-600  transition-all w-10 h-10 rounded-xl flex items-center justify-center"
                   >
                     <ShoppingBag size={20} />
-                    {show ? (
-                      <></>
-                    ) : (
-                      <div>
-                        <div className="absolute bottom-6 left-6 bg-purple-400 w-5 h-5 text-sm rounded-full text-center flex items-center justify-center">
-                          1
-                        </div>
+                    <div>
+                      <div className="absolute bottom-6 left-6 bg-purple-400 w-5 h-5 text-sm rounded-full text-center flex items-center justify-center">
+                        {(carts && carts.length) || 0}
                       </div>
-                    )}
+                    </div>
                   </motion.div>
-                  <AnimatePresence>
-                    {show ? (
-                      <motion.div
-                        key="cart"
-                        initial={{ y: -20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: 20, opacity: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="flex items-center justify-center h-50 w-80 rounded-xl z-50 absolute top-18 right-0 border border-neutral-600 bg-neutral-600"
-                      >
-                        <div>
-                          <div className="flex items-center gap-2">
-                            Cart is Empty <BrushCleaning size={20} />
-                          </div>
-                          <div className="absolute bottom-4 right-4 text-sm">
-                            Show Cart
-                          </div>
-                        </div>
-                      </motion.div>
-                    ) : (
-                      <></>
-                    )}
-                  </AnimatePresence>
                 </div>
               </div>
             </div>
@@ -283,6 +278,7 @@ export default function NavBar() {
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 1.5, delay: 0.2 }}
             className="border border-neutral-600 hover:bg-neutral-600 hover:shadow-lg hover:shadow-neutral-600 hover:scale-110 active:scale-100 w-10 h-10 rounded-l-xl flex items-center justify-center"
+            onClick={() => router.push(`/Games?Search=${search}`)}
           >
             <Search size={20} />
           </motion.div>
@@ -294,6 +290,11 @@ export default function NavBar() {
               className={`select-none outline-0 pl-2 h-10 text-sm rounded-r-xl lg:w-[700px] w-[450px]  border border-neutral-600`}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  router.push(`/Games?Search=${search}`);
+                }
+              }}
               placeholder="Search Any..."
             />
             {search && (
@@ -338,45 +339,15 @@ export default function NavBar() {
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 1.5, delay: 1.1 }}
-              onClick={() => setShow(!show)}
-              className={`cursor-pointer border border-neutral-600 ${
-                show ? "bg-neutral-600 shadow-lg shadow-neutral-600" : ""
-              } hover:shadow-lg hover:shadow-neutral-600 w-10 h-10 rounded-xl flex items-center justify-center`}
+              className="cursor-pointer border border-neutral-600 hover:shadow-lg hover:shadow-neutral-600 w-10 h-10 rounded-xl flex items-center justify-center"
             >
               <ShoppingBag size={20} />
-              {show ? (
-                <></>
-              ) : (
-                <div>
-                  <div className="absolute bottom-6 left-6 bg-purple-400 w-5 h-5 text-sm rounded-full text-center flex items-center justify-center">
-                    1
-                  </div>
+              <div>
+                <div className="absolute bottom-6 left-6 bg-purple-400 w-5 h-5 text-sm rounded-full text-center flex items-center justify-center">
+                  {(carts && carts.length) || 0}
                 </div>
-              )}
+              </div>
             </motion.div>
-            <AnimatePresence>
-              {show ? (
-                <motion.div
-                  key="cart"
-                  initial={{ y: -20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: 20, opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="flex items-center justify-center h-50 w-80 rounded-xl z-50 absolute top-18 right-0 border border-neutral-600 bg-neutral-600"
-                >
-                  <div>
-                    <div className="flex items-center gap-2">
-                      Cart is Empty <BrushCleaning size={20} />
-                    </div>
-                    <div className="absolute bottom-4 right-4 text-sm">
-                      Show Cart
-                    </div>
-                  </div>
-                </motion.div>
-              ) : (
-                <></>
-              )}
-            </AnimatePresence>
           </div>
         </div>
       </div>

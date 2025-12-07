@@ -25,9 +25,11 @@ export default function RootLayout({
       <body
         className={`${poppins.className} select-none antialiased text-neutral-300 bg-linear-to-l from-neutral-800 to-neutral-950 min-h-screen`}
       >
-        <NavBar />
-        <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
-        <Footer />
+        <Suspense fallback={<div>Loading...</div>}>
+          <NavBar />
+          {children}
+          <Footer />
+        </Suspense>
       </body>
     </html>
   );

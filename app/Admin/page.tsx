@@ -220,7 +220,7 @@ export default function Home() {
                   </div>
                 </div>
                 <input
-                  value={platform}
+                  value={platform.toLowerCase()}
                   onChange={(e) => setPlatform(e.target.value)}
                   className="outline-0 border border-neutral-800 w-[350px] h-10 text-sm focus:ring-2 focus:ring-neutral-800 rounded-lg pl-2"
                   onKeyDown={(e) => {
@@ -251,7 +251,7 @@ export default function Home() {
                   </div>
                 </div>
                 <input
-                  value={type}
+                  value={type.toLowerCase()}
                   onChange={(e) => setType(e.target.value)}
                   className="outline-0 border border-neutral-800 w-[350px] h-10 text-sm focus:ring-2 focus:ring-neutral-800 rounded-lg pl-2"
                   onKeyDown={(e) => {
@@ -520,7 +520,7 @@ export default function Home() {
                               {game.Genres?.join(", ")}
                             </div>
                           </div>
-                          <Link href={`/Game/${game.Name}`}>
+                          <Link href={`/Game/${game.id}`}>
                             <div className="text-center text-lg mt-5 border border-neutral-600 bg-neutral-600 p-2 rounded-lg hover:scale-110 active:scale-100 transition-all">
                               View Games
                             </div>
@@ -695,7 +695,7 @@ export default function Home() {
                   </div>
                 </div>
                 <input
-                  value={platform}
+                  value={platform.toLowerCase()}
                   onChange={(e) => setPlatform(e.target.value)}
                   className="outline-0 border border-neutral-800 w-[500px] h-10 text-sm focus:ring-2 focus:ring-neutral-800 rounded-lg pl-2"
                   onKeyDown={(e) => {
@@ -726,7 +726,7 @@ export default function Home() {
                   </div>
                 </div>
                 <input
-                  value={type}
+                  value={type.toLowerCase()}
                   onChange={(e) => setType(e.target.value)}
                   className="outline-0 border border-neutral-800 w-[500px] h-10 text-sm focus:ring-2 focus:ring-neutral-800 rounded-lg pl-2"
                   onKeyDown={(e) => {
@@ -986,7 +986,7 @@ export default function Home() {
                               {game.Genres?.join(", ")}
                             </div>
                           </div>
-                          <Link href={`/Game/${game.Name}`}>
+                          <Link href={`/Game/${game.id}`}>
                             <div className="text-center text-lg mt-5 border border-neutral-600 bg-neutral-600 p-2 rounded-lg hover:scale-110 active:scale-100 transition-all">
                               View Games
                             </div>
