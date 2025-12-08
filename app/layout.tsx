@@ -4,6 +4,7 @@ import "./globals.css";
 import NavBar from "@/comp/NavBar";
 import Footer from "@/comp/Footer";
 import { Suspense } from "react";
+import GuestProvider from "./GuestProvider";
 
 const poppins = Poppins({
   weight: ["600"],
@@ -27,7 +28,7 @@ export default function RootLayout({
       >
         <Suspense fallback={<div>Loading...</div>}>
           <NavBar />
-          {children}
+          <GuestProvider>{children}</GuestProvider>
           <Footer />
         </Suspense>
       </body>

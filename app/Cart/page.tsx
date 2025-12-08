@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
 import { Trash } from "lucide-react";
 import { User } from "next-auth";
+import { useGuestID } from "../GuestProvider";
 
 interface Cart {
   id: number;
@@ -20,19 +21,24 @@ export default function Home() {
   const [user, setUser] = useState<User | null>(null);
   const [change1, setChange1] = useState(false);
   const [change, setChange] = useState<number | null>(null);
+  const guestID = useGuestID();
 
   useEffect(() => {
     const getGames = async () => {
+      const cartUserID = user?.id || guestID;
+      if (!cartUserID) return;
+
       const { data } = await supabase
         .from("Cart")
         .select("*")
-        .eq("user_id", user?.id);
+        .eq("user_id", cartUserID);
 
       setCarts(data);
     };
 
     getGames();
   });
+
   useEffect(() => {
     const Getuser = async () => {
       const {

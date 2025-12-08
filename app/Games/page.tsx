@@ -17,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { User } from "@supabase/supabase-js";
+import { useGuestID } from "../GuestProvider";
 
 interface Games {
   id: number;
@@ -52,6 +53,7 @@ export default function GamesPage() {
   const PlatformParam = searchParams.get("Platform");
   const PlatformArray = PlatformParam ? PlatformParam.split(",") : [];
   const searchInput = searchParams.get("Search")?.toLowerCase() || "";
+  const guestID = useGuestID();
 
   const filteredGames = games
     ?.filter((g) => {
@@ -129,11 +131,13 @@ export default function GamesPage() {
     return `https://i.imgur.com/${id}.png`;
   }
 
-  const AddCart = async (game: Games, userID: string | undefined) => {
+  const AddCart = async (game: Games) => {
     try {
+      const cartUserID = user?.id || guestID;
       const { data: existingCart } = await supabase
         .from("Cart")
         .select("*")
+        .eq("user_id", cartUserID)
         .eq("Name", game.Name)
         .single();
 
@@ -148,7 +152,7 @@ export default function GamesPage() {
         const { error: insertError } = await supabase
           .from("Cart")
           .insert({
-            user_id: userID,
+            user_id: cartUserID,
             Name: game.Name,
             Price: game.Price,
             discountedPrice: game.discountedPrice,
@@ -698,7 +702,7 @@ export default function GamesPage() {
                         </div>
                         <div className="flex items-center justify-end">
                           <div
-                            onClick={() => AddCart(game, user?.id)}
+                            onClick={() => AddCart(game)}
                             className="border border-neutral-600 w-20 h-10 rounded-xl bg-neutral-600 hover:scale-110 active:scale-100 transition-all flex items-center justify-center"
                           >
                             <ShoppingBag size={20} />
@@ -1274,7 +1278,7 @@ export default function GamesPage() {
                           </div>
                           <div className="absolute bottom-5 right-5 flex items-center justify-end">
                             <div
-                              onClick={() => AddCart(game, user?.id)}
+                              onClick={() => AddCart(game)}
                               className="border border-neutral-600 w-20 h-10 rounded-xl bg-neutral-600 hover:scale-110 active:scale-100 transition-all flex items-center justify-center"
                             >
                               <ShoppingBag size={20} />

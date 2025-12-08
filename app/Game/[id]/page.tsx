@@ -22,6 +22,7 @@ import {
   FaMicrosoft,
 } from "react-icons/fa";
 import { SiEpicgames, SiOnstar, SiSteam, SiEa } from "react-icons/si";
+import { useGuestID } from "../../GuestProvider";
 
 interface Games {
   id: number;
@@ -47,6 +48,7 @@ export default function Home({ params }: { params: { id: number } }) {
   const [showT, setShowT] = useState<{ id: number; type: string } | null>(null);
   const [show, setShow] = useState(false);
   const [quantity, setQuantity] = useState(Number(1));
+  const guestID = useGuestID();
 
   useEffect(() => {
     const getGames = async () => {
@@ -83,11 +85,13 @@ export default function Home({ params }: { params: { id: number } }) {
     return `https://i.imgur.com/${id}.png`;
   }
 
-  const AddCart = async (game: Games, userID: string | undefined) => {
+  const AddCart = async (game: Games) => {
     try {
+      const cartUserID = user?.id || guestID;
       const { data: existingCart } = await supabase
         .from("Cart")
         .select("*")
+        .eq("user_id", cartUserID)
         .eq("Name", game.Name)
         .single();
 
@@ -102,7 +106,7 @@ export default function Home({ params }: { params: { id: number } }) {
         const { error: insertError } = await supabase
           .from("Cart")
           .insert({
-            user_id: userID,
+            user_id: cartUserID,
             Name: game.Name,
             Price: game.Price,
             discountedPrice: game.discountedPrice,
@@ -213,7 +217,7 @@ export default function Home({ params }: { params: { id: number } }) {
                         </div>
                       </div>
                       <div
-                        onClick={() => AddCart(game, user?.id)}
+                        onClick={() => AddCart(game)}
                         className="flex items-center justify-center gap-2 bg-neutral-700 hover:bg-neutral-600 transition-all cursor-pointer p-2 rounded-xl w-full mt-2"
                       >
                         <ShoppingBag size={20} />
@@ -674,7 +678,7 @@ export default function Home({ params }: { params: { id: number } }) {
                           </div>
                         </div>
                         <div
-                          onClick={() => AddCart(game, user?.id)}
+                          onClick={() => AddCart(game)}
                           className="flex items-center gap-5 text-xl border border-neutral-600 hover:bg-neutral-600 transition-all cursor-pointer p-2 rounded-xl w-50 m-10 justify-center"
                         >
                           <div>Add Cart</div>
