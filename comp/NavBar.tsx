@@ -50,7 +50,10 @@ export default function NavBar() {
   });
   useEffect(() => {
     const getGames = async () => {
-      const { data } = await supabase.from("Cart").select("*");
+      const { data } = await supabase
+        .from("Cart")
+        .select("*")
+        .eq("user_id", user?.id);
 
       setCarts(data);
     };
@@ -72,15 +75,20 @@ export default function NavBar() {
           <div className="text-neutral-400">Contact</div>
           <div className="text-neutral-400">Support</div>
           {user?.email === "akidimke136@gmail.com" ||
-          "dimicmateja685@gmail.com" ? (
+          user?.email === "dimicmateja685@gmail.com" ? (
             <div>
               <Link href="/Admin">
-                <motion.div className="text-neutral-400">Admin</motion.div>
+                <motion.div
+                  whileHover={{ rotateX: 30, rotateY: 15, y: -2 }}
+                  whileTap={{ scale: 0.9 }}
+                  transition={{ type: "spring", stiffness: 150, damping: 10 }}
+                  className="hover:scale-110 hover:text-neutral-300 cursor-pointer"
+                >
+                  Admin
+                </motion.div>
               </Link>
             </div>
-          ) : (
-            <></>
-          )}
+          ) : null}
         </motion.div>
         {showI ? (
           <div className="flex items-center justify-center border-b-3 border-b-neutral-600">
@@ -228,7 +236,7 @@ export default function NavBar() {
           Support
         </motion.div>
         {user?.email === "akidimke136@gmail.com" ||
-        "dimicmateja685@gmail.com" ? (
+        user?.email === "dimicmateja685@gmail.com" ? (
           <div>
             <Link href="/Admin">
               <motion.div
@@ -241,9 +249,7 @@ export default function NavBar() {
               </motion.div>
             </Link>
           </div>
-        ) : (
-          <></>
-        )}
+        ) : null}
       </motion.div>
       <div className="md:flex hidden justify-between items-center border-b-3 border-b-neutral-600">
         <Link href="/">

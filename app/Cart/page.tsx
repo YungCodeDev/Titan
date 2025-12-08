@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
 import { Trash } from "lucide-react";
+import { User } from "next-auth";
 
 interface Cart {
   id: number;
@@ -16,17 +17,32 @@ interface Cart {
 }
 export default function Home() {
   const [carts, setCarts] = useState<Cart[] | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [change1, setChange1] = useState(false);
   const [change, setChange] = useState<number | null>(null);
 
   useEffect(() => {
     const getGames = async () => {
-      const { data } = await supabase.from("Cart").select("*");
+      const { data } = await supabase
+        .from("Cart")
+        .select("*")
+        .eq("user_id", user?.id);
 
       setCarts(data);
     };
 
     getGames();
+  });
+  useEffect(() => {
+    const Getuser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      setUser(user);
+    };
+
+    Getuser();
   });
 
   function ImgurConv(url: string) {

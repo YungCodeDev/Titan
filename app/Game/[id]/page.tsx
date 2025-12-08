@@ -11,6 +11,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronUp, ShoppingBag } from "lucide-react";
+import { User } from "next-auth";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import {
@@ -38,6 +39,7 @@ interface Games {
 
 export default function Home({ params }: { params: { id: number } }) {
   const [games, setGames] = useState<Games[] | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [change, setChange] = useState(false);
   const [showP, setShowP] = useState<{ id: number; platform: string } | null>(
     null
@@ -56,6 +58,17 @@ export default function Home({ params }: { params: { id: number } }) {
 
     getGames();
   });
+  useEffect(() => {
+    const Getuser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      setUser(user);
+    };
+
+    Getuser();
+  });
 
   function ImgurConv(url: string) {
     if (!url || !url.trim()) return "";
@@ -70,9 +83,9 @@ export default function Home({ params }: { params: { id: number } }) {
     return `https://i.imgur.com/${id}.png`;
   }
 
-  const AddCart = async (game: Games) => {
+  const AddCart = async (game: Games, userID: string | undefined) => {
     try {
-      const { data: existingCart, error: fetchError } = await supabase
+      const { data: existingCart } = await supabase
         .from("Cart")
         .select("*")
         .eq("Name", game.Name)
@@ -89,6 +102,7 @@ export default function Home({ params }: { params: { id: number } }) {
         const { error: insertError } = await supabase
           .from("Cart")
           .insert({
+            user_id: userID,
             Name: game.Name,
             Price: game.Price,
             discountedPrice: game.discountedPrice,
@@ -199,7 +213,7 @@ export default function Home({ params }: { params: { id: number } }) {
                         </div>
                       </div>
                       <div
-                        onClick={() => AddCart(game)}
+                        onClick={() => AddCart(game, user?.id)}
                         className="flex items-center justify-center gap-2 bg-neutral-700 hover:bg-neutral-600 transition-all cursor-pointer p-2 rounded-xl w-full mt-2"
                       >
                         <ShoppingBag size={20} />
@@ -660,7 +674,7 @@ export default function Home({ params }: { params: { id: number } }) {
                           </div>
                         </div>
                         <div
-                          onClick={() => AddCart(game)}
+                          onClick={() => AddCart(game, user?.id)}
                           className="flex items-center gap-5 text-xl border border-neutral-600 hover:bg-neutral-600 transition-all cursor-pointer p-2 rounded-xl w-50 m-10 justify-center"
                         >
                           <div>Add Cart</div>

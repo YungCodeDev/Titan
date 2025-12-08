@@ -16,6 +16,7 @@ import { SiEpicgames, SiOnstar, SiSteam, SiEa } from "react-icons/si";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
+import { User } from "@supabase/supabase-js";
 
 interface Games {
   id: number;
@@ -33,6 +34,7 @@ interface Games {
 export default function GamesPage() {
   const searchParams = useSearchParams();
   const [games, setGames] = useState<Games[] | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [minprice, setMinPrice] = useState("");
   const [maxprice, setMaxPrice] = useState("");
   const [hovered, setHovered] = useState<number | null>(null);
@@ -102,6 +104,17 @@ export default function GamesPage() {
 
     getGames();
   });
+  useEffect(() => {
+    const Getuser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      setUser(user);
+    };
+
+    Getuser();
+  });
 
   function ImgurConv(url: string) {
     if (!url || !url.trim()) return "";
@@ -116,7 +129,7 @@ export default function GamesPage() {
     return `https://i.imgur.com/${id}.png`;
   }
 
-  const AddCart = async (game: Games) => {
+  const AddCart = async (game: Games, userID: string | undefined) => {
     try {
       const { data: existingCart } = await supabase
         .from("Cart")
@@ -135,6 +148,7 @@ export default function GamesPage() {
         const { error: insertError } = await supabase
           .from("Cart")
           .insert({
+            user_id: userID,
             Name: game.Name,
             Price: game.Price,
             discountedPrice: game.discountedPrice,
@@ -684,7 +698,7 @@ export default function GamesPage() {
                         </div>
                         <div className="flex items-center justify-end">
                           <div
-                            onClick={() => AddCart(game)}
+                            onClick={() => AddCart(game, user?.id)}
                             className="border border-neutral-600 w-20 h-10 rounded-xl bg-neutral-600 hover:scale-110 active:scale-100 transition-all flex items-center justify-center"
                           >
                             <ShoppingBag size={20} />
@@ -1260,7 +1274,7 @@ export default function GamesPage() {
                           </div>
                           <div className="absolute bottom-5 right-5 flex items-center justify-end">
                             <div
-                              onClick={() => AddCart(game)}
+                              onClick={() => AddCart(game, user?.id)}
                               className="border border-neutral-600 w-20 h-10 rounded-xl bg-neutral-600 hover:scale-110 active:scale-100 transition-all flex items-center justify-center"
                             >
                               <ShoppingBag size={20} />
