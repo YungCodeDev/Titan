@@ -21,7 +21,13 @@ import {
   FaPlaystation,
   FaMicrosoft,
 } from "react-icons/fa";
-import { SiEpicgames, SiOnstar, SiSteam, SiEa } from "react-icons/si";
+import {
+  SiEpicgames,
+  SiOnstar,
+  SiSteam,
+  SiEa,
+  SiRockstargames,
+} from "react-icons/si";
 import { useGuestID } from "../../GuestProvider";
 
 interface Games {
@@ -422,7 +428,7 @@ export default function Home({ params }: { params: { id: number } }) {
                               case "rockstar":
                                 return (
                                   <div key={i} className="relative">
-                                    <SiOnstar
+                                    <SiRockstargames
                                       onMouseEnter={() =>
                                         setShowP({
                                           id: game.id,

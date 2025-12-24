@@ -12,7 +12,13 @@ import {
   FaPlaystation,
   FaMicrosoft,
 } from "react-icons/fa";
-import { SiEpicgames, SiOnstar, SiSteam, SiEa } from "react-icons/si";
+import {
+  SiEpicgames,
+  SiOnstar,
+  SiSteam,
+  SiEa,
+  SiRockstargames,
+} from "react-icons/si";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
@@ -49,6 +55,7 @@ export default function GamesPage() {
   const [show, setShow] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const discount = searchParams.get("discount") === "true";
+  const discount90 = searchParams.get("discount") === "90";
   const genresParam = searchParams.get("Genres");
   const genresArray = genresParam ? genresParam.split(",") : [];
   const PlatformParam = searchParams.get("Platform");
@@ -69,6 +76,7 @@ export default function GamesPage() {
       if (yes && !g.discount) return false;
       if (no && g.discount) return false;
       if (discount && !g.discount) return false;
+      if (discount90 && g.discount <= 90) return false;
       if (
         genres.length > 0 &&
         !g.Genres.some((genre) => genres.includes(genre))
@@ -475,7 +483,7 @@ export default function GamesPage() {
                                 case "rockstar":
                                   return (
                                     <div key={i} className="relative">
-                                      <SiOnstar
+                                      <SiRockstargames
                                         onMouseEnter={() =>
                                           setShowP({
                                             id: game.id,
@@ -1039,7 +1047,7 @@ export default function GamesPage() {
                                 case "rockstar":
                                   return (
                                     <div key={i} className="relative">
-                                      <SiOnstar
+                                      <SiRockstargames
                                         onMouseEnter={() =>
                                           setShowP({
                                             id: game.id,

@@ -20,23 +20,10 @@ import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useGuestID } from "@/app/GuestProvider";
 
-interface Cart {
-  id: number;
-  created_at: Date;
-  Image_Url: string;
-  Name: string;
-  Price: number;
-  quantity: number;
-  discountedPrice: number;
-}
-
 export default function NavBar() {
   const [search, setSearch] = useState("");
   const [showI, setShowI] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const [carts, setCarts] = useState<Cart[] | null>(null);
-  const [refresh, setRefresh] = useState(false);
-  const guestID = useGuestID();
   const router = useRouter();
   const path = usePathname();
 
@@ -51,19 +38,6 @@ export default function NavBar() {
 
     Getuser();
   });
-  useEffect(() => {
-    const getGames = async () => {
-      const cartUserID = user?.id || guestID;
-      const { data, error } = await supabase
-        .from("Cart")
-        .select("*")
-        .eq("user_id", cartUserID);
-
-      if (!error) setCarts(data);
-    };
-
-    getGames();
-  }, [refresh, user]);
 
   if (path === "/Account") return <></>;
 
@@ -204,11 +178,6 @@ export default function NavBar() {
                       className="cursor-pointer border border-neutral-600  transition-all w-10 h-10 rounded-xl flex items-center justify-center"
                     >
                       <ShoppingBag size={20} />
-                      <div>
-                        <div className="absolute bottom-6 left-6 bg-purple-400 w-5 h-5 text-sm rounded-full text-center flex items-center justify-center">
-                          {carts?.length ?? 0}
-                        </div>
-                      </div>
                     </motion.div>
                   </div>
                 </Link>
@@ -355,11 +324,6 @@ export default function NavBar() {
                 className="cursor-pointer border border-neutral-600 hover:shadow-lg hover:shadow-neutral-600 w-10 h-10 rounded-xl flex items-center justify-center"
               >
                 <ShoppingBag size={20} />
-                <div>
-                  <div className="absolute bottom-6 left-6 bg-purple-400 w-5 h-5 text-sm rounded-full text-center flex items-center justify-center">
-                    {carts?.length ?? 0}
-                  </div>
-                </div>
               </motion.div>
             </div>
           </Link>
